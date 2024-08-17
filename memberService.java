@@ -122,7 +122,6 @@ public class MemberService {
         }
 
         memberRepository.save(member);
-        // 성공적으로 업데이트한 경우 true 반환
         return true;
     }
 
@@ -155,8 +154,6 @@ public class MemberService {
                 .build();
     }
 
-
-    // 유일한 실패 코드
     public void deleteMember(Long id){
         memberRepository.deleteById(id);
     }
@@ -166,10 +163,12 @@ public class MemberService {
         Member user = Member.builder()
                 .email(email)
                 .oauthProvider("KAKAO")
-                
+                .name(email+"님")
                 .build();
+        if (memberRepository.findMemberByEmail(email).isEmpty()){
+            memberRepository.save(user);
+        }
 
-        memberRepository.save(user);
         return user.getId();
     }
 }
